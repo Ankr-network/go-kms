@@ -1,4 +1,4 @@
-module github.com/Ankr-network/go-kms/database
+module github.com/Ankr-network/go-kms/kmsdb
 
 go 1.13
 
