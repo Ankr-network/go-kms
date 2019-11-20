@@ -1,19 +1,21 @@
 package approle
 
 import (
-	"testing"
+	"fmt"
 )
 
 const (
 	testAddr = "192.168.1.93:30386"
 )
 
-func TestClientGet(t *testing.T) {
+func Example_GetAppToken() {
 	c := NewClient(testAddr)
 	token, err := c.Get("ankr-sms-role")
 	if err != nil {
-		t.Log(err)
+		fmt.Println(err)
 		return
 	}
-	t.Logf("token: %s \n", token)
+	fmt.Printf("token: %s \n", token)
+	// output:
+	// token: s.ZIvORIjCInjYZIRoDbV0QgtU
 }

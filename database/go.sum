@@ -1,1 +1,2 @@
-github.com/Ankr-network/go-kms v0.0.0-20191119030318-3f73ebc32fba h1:YBv8DYLFwAIRTdlis7QM8CVS3FWNDlob9Soha2pNKXE=
+github.com/Ankr-network/go-kms/approle v0.0.0-20191119103928-5a9ea864b531 h1:aebHnY4hYlgaeOFtjgkRAfl3YInOq20+mXF3du+yyKo=
+github.com/Ankr-network/go-kms/approle v0.0.0-20191119103928-5a9ea864b531/go.mod h1:vgA0+mSpXRw2RrjLkMqeoV79Dim1nqb09+DJap/KKkI=
