@@ -1,4 +1,4 @@
-package database
+package kmsdb
 
 import (
 	"fmt"
