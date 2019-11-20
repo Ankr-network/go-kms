@@ -77,7 +77,8 @@ func (c *client) Get(roleName string) (string, string, error) {
 		return "", "", err
 	}
 	// step 2: get user name and password by token
-	dbURL := fmt.Sprintf("%s/v1/kmsdb/creds/%s", c.vaultAddr, roleName)
+	dbURL := fmt.Sprintf("%s/v1/database/creds/%s", c.vaultAddr, roleName)
+	fmt.Printf("token: %s url: %s \n", token, dbURL)
 	req, err := http.NewRequest("GET", dbURL, nil)
 	req.Header.Set(xVaultToken, token)
 	rsp, err := c.c.Do(req)
