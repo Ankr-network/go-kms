@@ -3,8 +3,8 @@ package kvdb
 import "testing"
 
 const (
-	operaterAddr = "192.168.1.92:30386"
-	vaultAddr    = "192.168.1.92:30050"
+	operaterAddr = "http://192.168.1.92:30386"
+	vaultAddr    = "http://192.168.1.92:30050"
 )
 
 func TestKv_Get(t *testing.T) {
@@ -13,7 +13,7 @@ func TestKv_Get(t *testing.T) {
 		t.Log(err)
 		return
 	}
-	rsp, err := kvc.Get("/")
+	rsp, err := kvc.Get("world")
 	if err != nil {
 		t.Log(err)
 		return

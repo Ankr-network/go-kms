@@ -32,6 +32,8 @@ func NewKVer(operatorAddr, vaultAddr, appRole string) (KVer, error) {
 	}
 	if !strings.HasPrefix(vaultAddr, "http") {
 		vaultAddr = fmt.Sprintf("http://%s/v1/kv/%s", vaultAddr, appRole)
+	} else {
+		vaultAddr = fmt.Sprintf("%s/v1/kv/%s", vaultAddr, appRole)
 	}
 
 	k := &kv{
