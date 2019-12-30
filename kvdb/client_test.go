@@ -13,7 +13,7 @@ func TestKv_Get(t *testing.T) {
 		return
 	}
 
-	rsp, err := kvc.Get("test")
+	rsp, err := kvc.Get("/")
 
 	if err != nil {
 		t.Log(err)

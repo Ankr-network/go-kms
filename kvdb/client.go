@@ -73,6 +73,7 @@ func (k *kv) Get(path string) (map[string]interface{}, error) {
 	} else {
 		path = k.vAddr
 	}
+	println("request path: ", path)
 	req, err := http.NewRequest("GET", path, nil)
 	if err != nil {
 		return nil, err
@@ -88,13 +89,14 @@ func (k *kv) Get(path string) (map[string]interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	if err = json.Unmarshal(body, &kvRsp); err != nil {
 		return nil, err
 	}
 	if kvRsp["data"] != nil {
 		return kvRsp["data"].(map[string]interface{}), nil
 	} else {
-		return nil, errors.New("no value")
+		return nil, errors.New(fmt.Sprintf("%+v", kvRsp))
 	}
 }
 
