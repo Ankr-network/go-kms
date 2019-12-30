@@ -26,20 +26,28 @@ type kv struct {
 	hc        http.Client
 }
 
-func NewKVer(operatorAddr, vaultAddr, appRole string) (KVer, error) {
+func NewKVer(kmsAddr, appRole string) (KVer, error) {
 	if strings.Contains(appRole, "/") {
 		return nil, errors.New("role name can't contain the char /")
 	}
-	if !strings.HasPrefix(vaultAddr, "http") {
-		vaultAddr = fmt.Sprintf("http://%s/v1/kv/%s", vaultAddr, appRole)
+
+	var (
+		oAddr string
+		vAddr string
+	)
+	if !strings.HasPrefix(kmsAddr, "http") {
+		vAddr = fmt.Sprintf("http://%s/vault/v1/kv/%s", kmsAddr, appRole)
+		oAddr = fmt.Sprintf("http://%s/ops", kmsAddr)
 	} else {
-		vaultAddr = fmt.Sprintf("%s/v1/kv/%s", vaultAddr, appRole)
+		vAddr = fmt.Sprintf("%s/vault/v1/kv/%s", kmsAddr, appRole)
+		oAddr = fmt.Sprintf("%s/ops", kmsAddr)
+
 	}
 
 	k := &kv{
 		appRole:   appRole,
-		oAddr:     operatorAddr,
-		vAddr:     vaultAddr,
+		oAddr:     oAddr,
+		vAddr:     vAddr,
 		headToken: "X-Vault-Token",
 		hc:        http.Client{},
 	}

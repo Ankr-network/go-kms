@@ -3,17 +3,18 @@ package kvdb
 import "testing"
 
 const (
-	operaterAddr = "http://192.168.1.92:30386"
-	vaultAddr    = "http://192.168.1.92:30050"
+	kmsAddr = "127.0.0.1"
 )
 
 func TestKv_Get(t *testing.T) {
-	kvc, err := NewKVer(operaterAddr, vaultAddr, "ankr-user")
+	kvc, err := NewKVer(kmsAddr, "ankr-user")
 	if err != nil {
 		t.Log(err)
 		return
 	}
-	rsp, err := kvc.Get("world")
+
+	rsp, err := kvc.Get("test")
+
 	if err != nil {
 		t.Log(err)
 		return
@@ -22,12 +23,12 @@ func TestKv_Get(t *testing.T) {
 }
 
 func TestKv_Put(t *testing.T) {
-	kvc, err := NewKVer(operaterAddr, vaultAddr, "ankr-sms")
+	kvc, err := NewKVer(kmsAddr, "ankr-user")
 	if err != nil {
 		t.Log(err)
 		return
 	}
-	if err = kvc.Put("hello", map[string]string{"hello": "world"}); err != nil {
+	if err = kvc.Put("test", map[string]string{"hello": "world"}); err != nil {
 		t.Logf("error: %v\n", err)
 		return
 	}

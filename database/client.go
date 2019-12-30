@@ -26,16 +26,22 @@ type client struct {
 // NewClient create new client by address argument
 // vaultAddr should be remote vault server addr which looks like "127.0.0.1:8200"
 // operatorAddr should be remote operator server addr which looks like "127.0.0.1:8080"
-func NewClient(operatorAddr, vaultAddr string) Database {
-	if !strings.HasPrefix(operatorAddr, "http") {
-		operatorAddr = "http://" + operatorAddr
+func NewClient(kmsAddr string) Database {
+	var (
+		oAddr string
+		vAddr string
+	)
+	if !strings.HasPrefix(kmsAddr, "http") {
+		oAddr = fmt.Sprintf("http://%s/ops", kmsAddr)
+		vAddr = fmt.Sprintf("http://%s/vault", kmsAddr)
+	} else {
+		oAddr = fmt.Sprintf("%s/ops", kmsAddr)
+		vAddr = fmt.Sprintf("%s/vault", kmsAddr)
 	}
-	if !strings.HasPrefix(vaultAddr, "http") {
-		vaultAddr = "http://" + vaultAddr
-	}
+
 	return &client{
-		operatorAddr: operatorAddr,
-		vaultAddr:    vaultAddr,
+		operatorAddr: oAddr,
+		vaultAddr:    vAddr,
 		c:            &http.Client{},
 	}
 }
