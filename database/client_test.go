@@ -1,4 +1,4 @@
-package kmsdb
+package database
 
 import (
 	"fmt"
@@ -6,12 +6,11 @@ import (
 )
 
 const (
-	operatorAddr = "192.168.1.93:30386"
-	vaultAddr    = "192.168.1.93:30050"
+	kmsAddr = "192.168.1.93:30050"
 )
 
 func Example_GetSecrets() {
-	c := NewClient(operatorAddr, vaultAddr)
+	c := NewClient(kmsAddr)
 	username, password, err := c.Get("ankr-sms-role")
 	if err != nil {
 		fmt.Println(err)

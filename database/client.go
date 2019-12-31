@@ -1,4 +1,4 @@
-package kmsdb
+package database
 
 import (
 	"encoding/json"
