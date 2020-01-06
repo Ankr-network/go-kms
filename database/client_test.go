@@ -6,12 +6,13 @@ import (
 )
 
 const (
-	kmsAddr = "192.168.1.93:30050"
+	kmsAddr = "192.168.39.113:30401"
+	//kmsAddr = "127.0.0.1:6900"
 )
 
 func Example_GetSecrets() {
 	c := NewClient(kmsAddr)
-	username, password, err := c.Get("ankr-sms-role")
+	username, password, err := c.Get("ankr-rbac")
 	if err != nil {
 		fmt.Println(err)
 		return
