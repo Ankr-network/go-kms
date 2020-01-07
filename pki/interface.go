@@ -1,6 +1,6 @@
 package pki
 
-type Client interface {
+type Handler interface {
 	// request private key and public key
 	Request(cfg *Config) (*Response, error)
 	// revoke certificates by serial number

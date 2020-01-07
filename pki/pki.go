@@ -14,7 +14,7 @@ import (
 	"github.com/Ankr-network/go-kms/approle"
 )
 
-type client struct {
+type Client struct {
 	token   string
 	appRole string
 	oAddr   string
@@ -29,7 +29,7 @@ const headToken = "X-Vault-Token"
 // NewPkiClient create pki client
 // kmsAddr  remote kms service address
 // appRole  the kms provide assign you application role
-func NewPkiClient(kmsAddr, appRole string) (Client, error) {
+func NewPkiClient(kmsAddr, appRole string) (Handler, error) {
 	if strings.Contains(appRole, "/") {
 		return nil, errors.New("role name can't contain the char /")
 	}
@@ -57,7 +57,7 @@ func NewPkiClient(kmsAddr, appRole string) (Client, error) {
 	buf := bytes.NewBuffer([]byte{})
 	encoder := json.NewEncoder(buf)
 
-	return &client{
+	return &Client{
 		token:   token,
 		oAddr:   oAddr,
 		vAddr:   vAddr,
@@ -110,7 +110,7 @@ type KmsError struct {
 	Errors []string `json:"errors"`
 }
 
-func (c *client) Request(cfg *Config) (*Response, error) {
+func (c *Client) Request(cfg *Config) (*Response, error) {
 	if cfg.CommonName == "" || cfg.Ttl == "" || strings.LastIndexByte(cfg.Ttl, 'h') == notExist {
 		return nil, errors.New("params not valid")
 	}
@@ -180,7 +180,7 @@ type RevokeRequest struct {
 	SerialNumber string `json:"serial_number"`
 }
 
-func (c *client) Revoke(serialNumber string) error {
+func (c *Client) Revoke(serialNumber string) error {
 	requstPath := fmt.Sprintf("%s/revoke", c.vAddr)
 	c.encBuf.Reset()
 	if err := c.encoder.Encode(&RevokeRequest{SerialNumber: serialNumber}); err != nil {
