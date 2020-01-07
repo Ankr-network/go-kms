@@ -12,7 +12,7 @@ import (
 	"github.com/Ankr-network/go-kms/approle"
 )
 
-type kv struct {
+type KV struct {
 	token     string
 	appRole   string
 	oAddr     string
@@ -39,7 +39,7 @@ func NewKVer(kmsAddr, appRole string) (KVer, error) {
 
 	}
 
-	k := &kv{
+	k := &KV{
 		appRole:   appRole,
 		oAddr:     oAddr,
 		vAddr:     vAddr,
@@ -52,7 +52,7 @@ func NewKVer(kmsAddr, appRole string) (KVer, error) {
 	return k, nil
 }
 
-func (k *kv) init() error {
+func (k *KV) init() error {
 	ac := approle.NewClient(k.oAddr)
 	token, err := ac.Get(k.appRole)
 	if err != nil {
@@ -62,7 +62,7 @@ func (k *kv) init() error {
 	return nil
 }
 
-func (k *kv) Get(path string) (map[string]interface{}, error) {
+func (k *KV) Get(path string) (map[string]interface{}, error) {
 	if path != "/" {
 		path = fmt.Sprintf("%s/%s", k.vAddr, path)
 	} else {
@@ -95,7 +95,7 @@ func (k *kv) Get(path string) (map[string]interface{}, error) {
 	}
 }
 
-func (k *kv) Put(path string, value map[string]string) error {
+func (k *KV) Put(path string, value map[string]string) error {
 	if path != "/" {
 		path = fmt.Sprintf("%s/%s", k.vAddr, path)
 	}
