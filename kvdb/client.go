@@ -12,11 +12,6 @@ import (
 	"github.com/Ankr-network/go-kms/approle"
 )
 
-type KVer interface {
-	Get(path string) (map[string]interface{}, error)
-	Put(path string, value map[string]string) error
-}
-
 type kv struct {
 	token     string
 	appRole   string

@@ -14,7 +14,7 @@ import (
 	"github.com/Ankr-network/go-kms/approle"
 )
 
-type Client struct {
+type client struct {
 	token   string
 	appRole string
 	oAddr   string
@@ -26,7 +26,10 @@ type Client struct {
 
 const headToken = "X-Vault-Token"
 
-func NewPkiClient(kmsAddr, appRole string) (*Client, error) {
+// NewPkiClient create pki client
+// kmsAddr  remote kms service address
+// appRole  the kms provide assign you application role
+func NewPkiClient(kmsAddr, appRole string) (Client, error) {
 	if strings.Contains(appRole, "/") {
 		return nil, errors.New("role name can't contain the char /")
 	}
@@ -54,7 +57,7 @@ func NewPkiClient(kmsAddr, appRole string) (*Client, error) {
 	buf := bytes.NewBuffer([]byte{})
 	encoder := json.NewEncoder(buf)
 
-	return &Client{
+	return &client{
 		token:   token,
 		oAddr:   oAddr,
 		vAddr:   vAddr,
@@ -72,16 +75,19 @@ type Config struct {
 }
 
 type Response struct {
+	// RSA private key
 	PriKey string
+	// RSA public key
 	Pubkey string
-	SN     string
+	// the serial number of private key, revoke it by serial number
+	SN string
 }
 
 const (
 	notExist = -1
 )
 
-type KmsRsp struct {
+type kmsRsp struct {
 	Auth interface{} `json:"auth"`
 	Data struct {
 		CaChain        []string `json:"ca_chain"`
@@ -104,7 +110,7 @@ type KmsError struct {
 	Errors []string `json:"errors"`
 }
 
-func (c *Client) Request(cfg *Config) (*Response, error) {
+func (c *client) Request(cfg *Config) (*Response, error) {
 	if cfg.CommonName == "" || cfg.Ttl == "" || strings.LastIndexByte(cfg.Ttl, 'h') == notExist {
 		return nil, errors.New("params not valid")
 	}
@@ -138,7 +144,7 @@ func (c *Client) Request(cfg *Config) (*Response, error) {
 		return nil, errors.New(err.Errors[0])
 	}
 
-	bodyStruct := &KmsRsp{}
+	bodyStruct := &kmsRsp{}
 	if err := json.Unmarshal(body, &bodyStruct); err != nil {
 		return nil, err
 	}
@@ -174,7 +180,7 @@ type RevokeRequest struct {
 	SerialNumber string `json:"serial_number"`
 }
 
-func (c *Client) Revoke(serialNumber string) error {
+func (c *client) Revoke(serialNumber string) error {
 	requstPath := fmt.Sprintf("%s/revoke", c.vAddr)
 	c.encBuf.Reset()
 	if err := c.encoder.Encode(&RevokeRequest{SerialNumber: serialNumber}); err != nil {
