@@ -2,7 +2,7 @@ package kvdb_test
 
 import "github.com/Ankr-network/go-kms/kvdb"
 
-func ExampleKv_Get() {
+func ExampleKV_Get() {
 	kvc, err := kvdb.NewKVer("127.0.0.1", "ankr-user")
 	if err != nil {
 		// handle error
@@ -19,7 +19,7 @@ func ExampleKv_Get() {
 	// output:
 }
 
-func ExampleKv_Put() {
+func ExampleKV_Put() {
 	kvc, err := kvdb.NewKVer("127.0.0.1", "ankr-user")
 	if err != nil {
 		// handle error
