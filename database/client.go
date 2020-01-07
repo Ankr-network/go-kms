@@ -17,15 +17,14 @@ type Database interface {
 	Get(roleName string) (string, string, error)
 }
 
-type client struct {
+type Client struct {
 	operatorAddr string
 	vaultAddr    string
 	c            *http.Client
 }
 
 // NewClient create new client by address argument
-// vaultAddr should be remote vault server addr which looks like "127.0.0.1:8200"
-// operatorAddr should be remote operator server addr which looks like "127.0.0.1:8080"
+// kmsAddr should be remote kms server addr which looks like "127.0.0.1:8200"
 func NewClient(kmsAddr string) Database {
 	var (
 		oAddr string
@@ -39,7 +38,7 @@ func NewClient(kmsAddr string) Database {
 		vAddr = fmt.Sprintf("%s/vault", kmsAddr)
 	}
 
-	return &client{
+	return &Client{
 		operatorAddr: oAddr,
 		vaultAddr:    vAddr,
 		c:            &http.Client{},
@@ -72,7 +71,9 @@ func (e ErrRsp) Error() string {
 	return strings.Join(e.Errors, ",")
 }
 
-func (c *client) Get(roleName string) (string, string, error) {
+// Get generate database secret  by role name
+// role name get from Ankr organization
+func (c *Client) Get(roleName string) (string, string, error) {
 	var (
 		dbRsp  DbRsp
 		errRsp ErrRsp
