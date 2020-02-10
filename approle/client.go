@@ -1,6 +1,7 @@
 package approle
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -37,6 +38,9 @@ func (c *client) Get(roleName string) (string, error) {
 	defer func() {
 		err = rsp.Body.Close()
 	}()
+	if rsp.StatusCode == http.StatusNotFound {
+		return "", errors.New("no value")
+	}
 	token, err := ioutil.ReadAll(rsp.Body)
 	if err != nil {
 		return "", err

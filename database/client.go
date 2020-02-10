@@ -2,6 +2,7 @@ package database
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -97,6 +98,10 @@ func (c *Client) Get(roleName string) (string, string, error) {
 			println(err.Error())
 		}
 	}()
+	if rsp.StatusCode == http.StatusNotFound {
+		return "", "", errors.New("no value")
+	}
+
 	body, err := ioutil.ReadAll(rsp.Body)
 	if err != nil {
 		return "", "", err

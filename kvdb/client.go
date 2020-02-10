@@ -79,6 +79,11 @@ func (k *KV) Get(path string) (map[string]interface{}, error) {
 		return nil, err
 	}
 	defer rsp.Body.Close()
+
+	if rsp.StatusCode == http.StatusNotFound {
+		return nil, errors.New("no value")
+	}
+
 	var kvRsp map[string]interface{}
 	body, err := ioutil.ReadAll(rsp.Body)
 	if err != nil {
